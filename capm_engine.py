@@ -74,12 +74,10 @@ def prepare_returns_series(file_path, ticker, date_format="%d/%m/%Y"):
     # Limpieza de Log_Returns
     if 'Log_Returns' in df.columns:
         if ticker == "GOSS":
-            for idx in df.index:
-                val = str(df.at[idx, 'Log_Returns'])
-                if "-13.702" in val:
-                    df.at[idx, 'Log_Returns'] = -1.37027697413291
-                elif "-1.616" in val and len(val) > 10:
-                    df.at[idx, 'Log_Returns'] = -1.61650511478529
+            s_str = df['Log_Returns'].astype(str)
+            s_str = s_str.str.replace(r".*13\.702.*", "-1.37027697413291", regex=True)
+            s_str = s_str.str.replace(r".*1\.616505.*", "-1.61650511478529", regex=True)
+            df['Log_Returns'] = s_str
         df['Log_Returns'] = pd.to_numeric(df['Log_Returns'], errors='coerce')
     else:
         df['Log_Returns'] = np.nan
