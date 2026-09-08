@@ -158,8 +158,9 @@ def load_all_series(base_dir="."):
             
         # 3. Retornos Simples y Retorno Acumulado
         df['Simple_Returns'] = np.exp(df['Log_Returns_Clean']) - 1.0
-        df['Cumulative_Return'] = (df['Close_Clean'] / df['Close_Clean'].iloc[0]) - 1.0
-        df['Normalized_100'] = (df['Close_Clean'] / df['Close_Clean'].iloc[0]) * 100.0
+        first_close = df['Close_Clean'].iloc[0] if len(df) > 0 and pd.notna(df['Close_Clean'].iloc[0]) and df['Close_Clean'].iloc[0] != 0 else 1.0
+        df['Cumulative_Return'] = (df['Close_Clean'] / first_close) - 1.0
+        df['Normalized_100'] = (df['Close_Clean'] / first_close) * 100.0
         
         # 4. Medias Móviles de Precio
         df['SMA_20'] = df['Close_Clean'].rolling(window=20).mean()

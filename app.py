@@ -526,10 +526,11 @@ else:
             st.markdown('<div class="chart-section-title">3. Retornos Diarios y Clústeres de Volatilidad</div>', unsafe_allow_html=True)
             fig_ret = go.Figure()
             
+            colors = ['#10B981' if v >= 0 else '#EF4444' for v in df_active['Log_Returns_Clean'].fillna(0)]
             fig_ret.add_trace(go.Bar(
                 x=df_active['Date_Parsed'],
                 y=df_active['Log_Returns_Clean'],
-                marker_color=np.where(df_active['Log_Returns_Clean'] >= 0, '#10B981', '#EF4444'),
+                marker_color=colors,
                 name="Retorno Diario",
                 opacity=0.75,
                 hovertemplate="<b>%{x|%d/%m/%Y}</b><br>Retorno: %{y:+.2%}<extra></extra>"
