@@ -73,11 +73,9 @@ def prepare_returns_series(file_path, ticker, date_format="%d/%m/%Y"):
     
     # Limpieza de Log_Returns
     if 'Log_Returns' in df.columns:
-        s_lr = df['Log_Returns'].astype(str)
-        # Corrección de puntos de miles en GOSS si existen
         if ticker == "GOSS":
             for idx in df.index:
-                val = s_lr.loc[idx]
+                val = str(df.at[idx, 'Log_Returns'])
                 if "-13.702" in val:
                     df.at[idx, 'Log_Returns'] = -1.37027697413291
                 elif "-1.616" in val and len(val) > 10:
